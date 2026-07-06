@@ -1,9 +1,27 @@
-.env
+# Python
 __pycache__/
-*.pyc
-*.sqlite3
-*.db
-data/
-logs/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environment
 .venv/
+
+# Secrets
+.env
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# IDE
 .idea/
+
+# OS
+.DS_Store
+Thumbs.db
