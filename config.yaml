@@ -1,0 +1,26 @@
+family:
+  adults: 2
+  children:
+    - 14
+    - 11
+
+trip:
+  departure_dates:
+    - 2026-07-17
+    - 2026-07-18
+  nights: 7
+
+destinations:
+  countries:
+    - Nederland
+    - België
+    - Frankrijk
+
+airports:
+  - AMS
+  - EIN
+  - CDG
+  - ORY
+
+notifications:
+  minimum_deal_score: 80
