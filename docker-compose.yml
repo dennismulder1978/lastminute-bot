@@ -1,0 +1,12 @@
+services:
+  holidayhunter:
+    build: .
+    container_name: holidayhunter
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs

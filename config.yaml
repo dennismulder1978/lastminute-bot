@@ -24,3 +24,6 @@ airports:
 
 notifications:
   minimum_deal_score: 80
+
+scheduler:
+  interval_seconds: 30

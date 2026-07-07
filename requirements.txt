@@ -7,3 +7,4 @@ beautifulsoup4==4.13.5
 lxml==6.0.2
 playwright==1.55.0
 PyYAML==6.0.2
+apscheduler

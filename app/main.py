@@ -1,11 +1,27 @@
 import asyncio
+import logging
 
-from app.core.logging import logger
-from app.database.db import initialize_database
-from app.scrapers.manager import ScraperManager
-from app.scrapers.centerparcs import CenterParcsScraper
 from app.config.settings import settings
+from app.core.deal_service import DealService
+from app.core.jobs import run_scrapers
+from app.database.db import initialize_database
 from app.notifier.telegram import TelegramNotifier
+from app.scheduler import scheduler
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s",
+)
+
+logger = logging.getLogger(__name__)
+
+
+async def holiday_job(deal_service: DealService):
+    logger.info("Zoeken naar vakanties...")
+
+    deals = run_scrapers()
+
+    await deal_service.process(deals)
 
 
 async def main():
@@ -13,30 +29,45 @@ async def main():
     logger.info("HolidayHunter starting...")
 
     initialize_database()
-
-    logger.info("Configuration loaded")
     logger.info("Database initialized")
 
+    if not settings.telegram_bot_token:
+        raise RuntimeError("TELEGRAM_BOT_TOKEN ontbreekt")
+
+    if not settings.telegram_chat_id:
+        raise RuntimeError("TELEGRAM_CHAT_ID ontbreekt")
+
     notifier = TelegramNotifier()
+    deal_service = DealService(notifier)
 
     logger.info("Telegram initialized")
 
-    await notifier.send_message(
-        "🚀 HolidayHunter is gestart!"
+    await notifier.send_message("🚀 HolidayHunter gestart")
+
+    # Meteen één keer uitvoeren
+    await holiday_job(deal_service)
+
+    # Iedere 30 seconden (tijdelijk voor testen)
+    scheduler.add_job(
+        holiday_job,
+        "interval",
+        seconds=30,
+        args=[deal_service],
+        id="holiday_search",
+        replace_existing=True,
     )
 
-    logger.info("Telegram test message sent")
+    scheduler.start()
 
-    logger.info("HolidayHunter ready")
+    logger.info("Scheduler gestart")
 
-    manager = ScraperManager()
-
-    manager.register(CenterParcsScraper())
-
-    deals = manager.run()
-
-    for deal in deals:
-        logger.info("%s €%s", deal.title, deal.price)
+    # Applicatie actief houden
+    try:
+        while True:
+            await asyncio.sleep(3600)
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()
+        logger.info("HolidayHunter gestopt")
 
 
 if __name__ == "__main__":
