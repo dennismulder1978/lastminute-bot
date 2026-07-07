@@ -1,3 +1,16 @@
+providers:
+  centerparcs:
+    enabled: true
+
+  eurocamp:
+    enabled: true
+
+  roan:
+    enabled: true
+
+  landal:
+    enabled: false
+
 family:
   adults: 2
   children:

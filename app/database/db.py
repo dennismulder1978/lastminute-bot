@@ -1,10 +1,12 @@
 import sqlite3
 from pathlib import Path
 
-DB_FILE = Path("data/holidayhunter.db")
+BASE_DIR = Path(__file__).resolve().parents[2]
+DB_FILE = BASE_DIR / "data" / "holidayhunter.db"
 
 
 def initialize_database():
+
     DB_FILE.parent.mkdir(exist_ok=True)
 
     conn = sqlite3.connect(DB_FILE)
@@ -24,4 +26,10 @@ def initialize_database():
     """)
 
     conn.commit()
+
+    # Controleer direct of de tabel bestaat
+    cursor = conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table';"
+    )
+
     conn.close()

@@ -11,14 +11,22 @@ class DatabaseManager:
     def close(self):
         self.conn.close()
 
-    def get_deal(self, source: str, title: str):
+    def get_deal(self, deal):
         cursor = self.conn.execute(
             """
             SELECT id, price
             FROM deals
-            WHERE source = ? AND title = ?
+            WHERE source = ?
+              AND title = ?
+              AND location = ?
+              AND url = ?
             """,
-            (source, title),
+            (
+                deal.source,
+                deal.title,
+                deal.location,
+                deal.url,
+            ),
         )
 
         return cursor.fetchone()
@@ -41,21 +49,24 @@ class DatabaseManager:
 
         self.conn.commit()
 
+
     def update_price(self, deal):
         self.conn.execute(
             """
             UPDATE deals
-            SET
-                price = ?,
+            SET price     = ?,
                 last_seen = CURRENT_TIMESTAMP
-            WHERE
-                source = ?
-                AND title = ?
+            WHERE source = ?
+              AND title = ?
+              AND location = ?
+              AND url = ?
             """,
             (
                 deal.price,
                 deal.source,
                 deal.title,
+                deal.location,
+                deal.url,
             ),
         )
 

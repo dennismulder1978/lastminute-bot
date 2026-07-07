@@ -3,10 +3,11 @@ import logging
 
 from app.config.settings import settings
 from app.core.deal_service import DealService
-from app.core.jobs import run_scrapers
 from app.database.db import initialize_database
 from app.notifier.telegram import TelegramNotifier
 from app.scheduler import scheduler
+from app.scrapers.manager import run_scrapers
+from app.config.config_loader import load_config
 
 logging.basicConfig(
     level=logging.INFO,
@@ -14,12 +15,12 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-
+config = load_config()
 
 async def holiday_job(deal_service: DealService):
     logger.info("Zoeken naar vakanties...")
 
-    deals = run_scrapers()
+    deals = run_scrapers(config)
 
     await deal_service.process(deals)
 

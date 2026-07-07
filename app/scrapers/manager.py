@@ -1,19 +1,15 @@
-from app.models.deal import Deal
+from app.scrapers.centerparcs import CenterParcsScraper
 
 
-class ScraperManager:
+def run_scrapers(config):
 
-    def __init__(self):
-        self.scrapers = []
+    scrapers = [
+        CenterParcsScraper(config),
+    ]
 
-    def register(self, scraper):
-        self.scrapers.append(scraper)
+    deals = []
 
-    def run(self) -> list[Deal]:
+    for scraper in scrapers:
+        deals.extend(scraper.scrape())
 
-        deals = []
-
-        for scraper in self.scrapers:
-            deals.extend(scraper.search())
-
-        return deals
+    return deals
