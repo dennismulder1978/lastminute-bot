@@ -4,8 +4,7 @@ from app.scrapers.base import BaseScraper
 
 class CenterParcsScraper(BaseScraper):
 
-    def __init__(self, config):
-        self.config = config
+    provider = "centerparcs"
 
     def scrape(self):
 
@@ -28,8 +27,11 @@ class CenterParcsScraper(BaseScraper):
                 source="Center Parcs",
                 title="De Vossemeren",
                 location="Lommel",
-                price=699,
+                region="hier",
+                countrycode="nl",
+                price=696,
                 url="https://www.centerparcs.nl/",
+                arrival_date=departure_dates[0],
             )
         ]
 

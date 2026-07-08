@@ -1,5 +1,6 @@
 from app.core.logging import logger
 from app.database.manager import DatabaseManager
+from app.models.deal import Deal
 
 
 class DealService:
@@ -13,11 +14,15 @@ class DealService:
         for deal in deals:
 
             logger.info(
-                "%s | %s | €%s",
+                "%s | %s | %s | %s | €%.2f",
                 deal.source,
+                deal.arrival_date,
                 deal.title,
+                deal.region,
                 deal.price,
             )
+
+            logger.info("%s", deal.url)
 
             existing = self.db.get_deal(deal)
 
@@ -27,12 +32,16 @@ class DealService:
                 self.db.insert_deal(deal)
 
                 await self.notifier.send_message(
-                    f"""🏖️ Nieuwe deal!
+                    f"""🏖️ Nieuwe deal
 
-Bron: {deal.source}
-Bestemming: {deal.title}
-Prijs: €{deal.price}
-"""
+                Bron: {deal.source}
+                Bestemming: {deal.title}
+                Regio: {deal.region}
+                Aankomst: {deal.arrival_date:%d-%m-%Y}
+                Prijs: €{deal.price:.2f}
+
+                {deal.url}
+                """
                 )
 
                 continue
@@ -45,11 +54,15 @@ Prijs: €{deal.price}
                 self.db.update_price(deal)
 
                 await self.notifier.send_message(
-                    f"""💰 Prijs gewijzigd!
+                    f"""💰 Prijs gewijzigd
 
-Bron: {deal.source}
-Bestemming: {deal.title}
+                Bron: {deal.source}
+                Bestemming: {deal.title}
+                Regio: {deal.region}
+                Aankomst: {deal.arrival_date:%d-%m-%Y}
 
-€{old_price} ➜ €{deal.price}
-"""
+                €{old_price:.2f} → €{deal.price:.2f}
+
+                {deal.url}
+                """
                 )

@@ -20,12 +20,14 @@ class DatabaseManager:
               AND title = ?
               AND location = ?
               AND url = ?
+              AND arrival_date = ?
             """,
             (
                 deal.source,
                 deal.title,
                 deal.location,
                 deal.url,
+                deal.arrival_date.isoformat(),
             ),
         )
 
@@ -35,15 +37,18 @@ class DatabaseManager:
         self.conn.execute(
             """
             INSERT INTO deals
-                (source, title, location, url, price)
-            VALUES (?, ?, ?, ?, ?)
+                (source, title, location, region, countrycode, url, price, arrival_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 deal.source,
                 deal.title,
                 deal.location,
+                deal.region,
+                deal.countrycode,
                 deal.url,
                 deal.price,
+                deal.arrival_date.isoformat(),
             ),
         )
 
@@ -60,6 +65,7 @@ class DatabaseManager:
               AND title = ?
               AND location = ?
               AND url = ?
+              AND arrival_date = ?
             """,
             (
                 deal.price,
@@ -67,6 +73,7 @@ class DatabaseManager:
                 deal.title,
                 deal.location,
                 deal.url,
+                deal.arrival_date.isoformat(),
             ),
         )
 

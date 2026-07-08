@@ -17,11 +17,14 @@ def initialize_database():
             source TEXT NOT NULL,
             title TEXT NOT NULL,
             location TEXT,
+            region TEXT,
+            countrycode TEXT,
             url TEXT,
+            arrival_date TEXT NOT NULL,
             price REAL NOT NULL,
             first_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            UNIQUE(source, title)
+            UNIQUE(source, url, arrival_date)
         )
     """)
 
