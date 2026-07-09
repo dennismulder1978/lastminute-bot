@@ -1,7 +1,8 @@
 from app.models.deal import Deal
 from app.scrapers.base import BaseScraper
 from datetime import timedelta
-
+from app.constants.accommodation_mapping import ROOMPOT_MAPPING
+from pprint import pprint
 class RoompotScraper(BaseScraper):
 
     provider = "roompot"
@@ -10,25 +11,26 @@ class RoompotScraper(BaseScraper):
 
     def scrape(self):
 
-        adults = self.config["family"]["adults"]
-        children = self.config["family"]["children"]
-
-        departure_dates = self.config["trip"]["departure_dates"]
-        nights = self.config["trip"]["nights"]
-
-        regions = self.config["providers"]["roompot"]["regions"]
 
         deals = []
 
-        for arrival in departure_dates:
-            departure = arrival + timedelta(days=nights)
+        for arrival in self.departure_dates:
+            departure = arrival + timedelta(days=self.nights)
+
+            adults = self.adults
+            children = len(self.children)
+
+            regions = self.regions
+            accommodation_types = self.accommodation_types
+            min_capacity = self.min_capacity
+            min_bedrooms = self.min_bedrooms
 
             data = {
                 "arrivalDate": arrival.strftime("%d-%m-%Y"),
                 "departureDate": departure.strftime("%d-%m-%Y"),
                 "parkInfoLevel": 0,
                 "promotedProductId": "{3F1C8CB8-055E-4AA7-8F36-489E9A3B9A30}",
-                "regions[]": regions,
+                # "regions[]": regions,
                 "campaignInventoryEnabled": "false",
                 "stayType": 968,
                 "searchType": 1,
@@ -36,7 +38,7 @@ class RoompotScraper(BaseScraper):
                 "travelGroup[0][Id]": "18-120",
                 "travelGroup[0][Amount]": adults,
                 "travelGroup[1][Id]": "3-17",
-                "travelGroup[1][Amount]": len(children),
+                "travelGroup[1][Amount]": children,
                 "travelGroup[2][Id]": "0-2",
                 "travelGroup[2][Amount]": 0,
                 "travelGroup[3][Id]": "pets",
@@ -68,7 +70,7 @@ class RoompotScraper(BaseScraper):
             parks = search_result.get("parks", [])
 
             self.logger.info(
-                "%s: %d parks",
+                "RoompotScraper: %s: %d parks",
                 arrival,
                 len(parks)
             )
@@ -76,13 +78,6 @@ class RoompotScraper(BaseScraper):
             for park in parks:
 
                 park_info = park.get("ParkInfo", {})
-                price_info = park.get("PriceInfo", {})
-
-                name = park_info.get("ParkName")
-
-                price = price_info.get("bestRentalPriceInCents")
-                if price is not None:
-                    price = price / 100
 
                 url = (
                     park_info
@@ -90,10 +85,34 @@ class RoompotScraper(BaseScraper):
                     .get("Url", "")
                 )
 
+                price_info = park.get("PriceInfo")
+
+                if not price_info:
+                    continue
+
+
+                code = price_info.get("accommodationCode", "").lower()
+
+                accommodation_type = ROOMPOT_MAPPING.get(code)
+                if accommodation_type is None:
+                    self.logger.warning("Unknown Roompot accommodation code: %s", code)
+                    continue
+
+                if (
+                        self.accommodation_types
+                        and accommodation_type not in self.accommodation_types
+                ):
+                    continue
+
+                price = price_info.get("bestRentalPriceInCents")
+
+                if price is not None:
+                    price /= 100
+
                 deals.append(
                     Deal(
                         source="Roompot",
-                        title=name,
+                        title=park_info.get("ParkName", ""),
                         location=park_info.get("City", ""),
                         region=park_info.get("Region", ""),
                         countrycode=park_info.get("CountryCode", ""),
@@ -101,15 +120,12 @@ class RoompotScraper(BaseScraper):
                         url=url,
                         arrival_date=arrival,
 
-                        accommodation_type=None,
+                        accommodation_type=accommodation_type,
                         comfort_level=None,
-
                         bedrooms=None,
                         capacity=None,
-
                         airconditioning=None,
                         pets_allowed=None,
                     )
                 )
-
         return deals

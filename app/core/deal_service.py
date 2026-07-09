@@ -13,17 +13,6 @@ class DealService:
 
         for deal in deals:
 
-            logger.info(
-                "%s | %s | %s | %s | €%.2f",
-                deal.source,
-                deal.arrival_date,
-                deal.title,
-                deal.region,
-                deal.price,
-            )
-
-            logger.info("%s", deal.url)
-
             existing = self.db.get_deal(deal)
 
             # Nieuwe deal
@@ -43,6 +32,17 @@ class DealService:
                 {deal.url}
                 """
                 )
+
+                logger.info(
+                    "%s | %s | %s | %s | €%.2f",
+                    deal.source,
+                    deal.arrival_date,
+                    deal.title,
+                    deal.region,
+                    deal.price,
+                )
+
+                logger.info("%s", deal.url)
 
                 continue
 
@@ -66,3 +66,14 @@ class DealService:
                 {deal.url}
                 """
                 )
+
+                logger.info(
+                    "%s | %s | %s | %s | €%.2f",
+                    deal.source,
+                    deal.arrival_date,
+                    deal.title,
+                    deal.region,
+                    deal.price,
+                )
+
+                logger.info("%s", deal.url)

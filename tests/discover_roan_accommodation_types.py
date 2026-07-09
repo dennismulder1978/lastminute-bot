@@ -1,5 +1,5 @@
 from datetime import timedelta
-
+from pprint import pprint
 from app.config.config_loader import load_config
 from app.scrapers.roan import RoanScraper
 
@@ -15,7 +15,7 @@ def main():
 
     for arrival in departure_dates:
 
-        departure = arrival + timedelta(days=nights)
+
 
         page = 1
 
@@ -44,11 +44,13 @@ def main():
                 break
 
             for camping in campings:
-                for accommodation in camping.get("accommodationKindResults", []):
-
-                    accommodation_types.add(
-                        accommodation.get("title", "").strip()
-                    )
+                pprint(camping['accommodationKindResults'][0])
+                print()
+            # for accommodation in campings[0].get("accommodationKindResults", []):
+            #
+            #     accommodation_types.add(
+            #         accommodation.get("title", "").strip()
+            #     )
 
             page += 1
 

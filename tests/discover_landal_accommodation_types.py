@@ -1,12 +1,12 @@
 from datetime import timedelta
 
 from app.config.config_loader import load_config
-from app.scrapers.roompot import RoompotScraper
+from app.scrapers.landal import LandalScraper
 
 from pprint import pprint
 def main():
     config = load_config()
-    scraper = RoompotScraper(config)
+    scraper = LandalScraper(config)
 
     adults = config["family"]["adults"]
     children = config["family"]["children"]
@@ -45,6 +45,36 @@ def main():
             "defaultArrivalDay": "",
         }
 
+        # data = {
+        #     "arrivalDate": arrival.strftime("%d-%m-%Y"),
+        #     "arrivalDaysAfter": 0,
+        #     "arrivalDaysBefore": 0,
+        #     "departureDate": departure.strftime("%d-%m-%Y"),
+        #     "numberOfNights": nights,
+        #
+        #     "campaignInventoryEnabled": "false",
+        #
+        #     "selectedParkCode": "DSD",  # <-- verplicht
+        #     "sortOption": 16,
+        #
+        #     "stayType": 947,
+        #     "searchType": 3,
+        #
+        #     "paginationOffset": 0,
+        #
+        #     "travelGroup[0][Id]": "18-120",
+        #     "travelGroup[0][Amount]": adults,
+        #     "travelGroup[1][Id]": "3-17",
+        #     "travelGroup[1][Amount]": len(children),
+        #     "travelGroup[2][Id]": "0-2",
+        #     "travelGroup[2][Amount]": 0,
+        #     "travelGroup[3][Id]": "pets",
+        #     "travelGroup[3][Amount]": 0,
+        #
+        #     "travelGroupCombiEnabled": "false",
+        #     "defaultArrivalDay": "",
+        # }
+
         headers = {
             "Accept": "application/json, text/plain, */*",
             "Content-Type": "application/x-www-form-urlencoded",
@@ -52,39 +82,21 @@ def main():
             "Referer": "https://www.roompot.com/resorts/parks",
         }
         response = scraper.post(
-            scraper.URL,
+            "https://www.landal.com/en/api/destinations/parksAvailabilities/search",
             headers=headers,
             data=data,
         )
 
         result = response.json()
-        # pprint(result["searchResult"]["parks"])
+        # pprint(result.keys())
+        # pprint(result["searchResult"].keys())
+        # accommodations = result["searchResult"]["accommodations"]
 
-        # for each in result["searchResult"]["parks"]:
-        #     print(each['PriceInfo']['accommodationCode'])
-        pprint(result["searchResult"]["parks"][0])
-        # print(result["searchResult"].keys())
-        # print(result["searchResult"]["parks"][0].keys())
-        # for park in result["searchResult"]["parks"]:
-        #     print(park["ParkCode"])
-        parks = result.get("searchResult", {}).get("parks", [])
+        # print(len(accommodations))
+        # pprint(accommodations[0])
 
-        for park in parks:
+        from pprint import pprint
 
-            for accommodation in park.get("Accommodations", []):
-
-                name = accommodation.get("AccommodationTypeName")
-
-                if name:
-                    accommodation_types.add(name.strip())
-
-    print("\n=== Accommodation types ===\n")
-
-    for accommodation_type in sorted(accommodation_types):
-        print(accommodation_type)
-
-    print(f"\nFound {len(accommodation_types)} unique accommodation types.")
-
-
+        pprint(result["searchResult"]["parks"][0]["ParkInfo"])
 if __name__ == "__main__":
     main()

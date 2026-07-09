@@ -1,6 +1,6 @@
 from app.models.deal import Deal
 from app.scrapers.base import BaseScraper
-
+from datetime import timedelta
 
 class CenterParcsScraper(BaseScraper):
 
@@ -8,19 +8,20 @@ class CenterParcsScraper(BaseScraper):
 
     def scrape(self):
 
-        adults = self.config["family"]["adults"]
-        children = self.config["family"]["children"]
+        for arrival in self.departure_dates:
+            departure = arrival + timedelta(days=self.nights)
 
-        departure_dates = self.config["trip"]["departure_dates"]
-        nights = self.config["trip"]["nights"]
+            adults = self.adults
+            children = len(self.children)
+
+            regions = self.regions
+            accommodation_types = self.accommodation_types
+            min_capacity = self.min_capacity
+
+
 
         # Voor nu alleen even loggen zodat we zien dat de YAML wordt gebruikt.
-        print(
-            f"CenterParcs: {adults} volwassenen, "
-            f"{len(children)} kinderen, "
-            f"{departure_dates}, "
-            f"{nights} nachten"
-        )
+        print(f"CenterParcs: DUMMY TEST {arrival}")
 
         deals = [
             Deal(
@@ -31,7 +32,7 @@ class CenterParcsScraper(BaseScraper):
                 countrycode="nl",
                 price=696,
                 url="https://www.centerparcs.nl/",
-                arrival_date=departure_dates[0],
+                arrival_date=self.departure_dates[0],
             )
         ]
 

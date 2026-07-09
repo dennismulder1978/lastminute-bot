@@ -1,8 +1,7 @@
 from datetime import timedelta
-
 from app.models.deal import Deal
 from app.scrapers.base import BaseScraper
-
+from app.constants.accommodation_mapping import ROAN_MAPPING
 
 class RoanScraper(BaseScraper):
 
@@ -12,15 +11,17 @@ class RoanScraper(BaseScraper):
 
     def scrape(self):
 
-        departure_dates = self.config["trip"]["departure_dates"]
-        nights = self.config["trip"]["nights"]
-        regions = self.config["providers"]["roan"]["regions"]
-
         deals = []
 
-        for arrival in departure_dates:
+        for arrival in self.departure_dates:
+            departure = arrival + timedelta(days=self.nights)
 
-            departure = arrival + timedelta(days=nights)
+            adults = self.adults
+            children = len(self.children)
+            regions = self.regions
+            accommodation_types = self.accommodation_types
+            min_capacity = self.min_capacity
+            min_bedrooms = self.min_bedrooms
 
             page = 1
 
@@ -32,7 +33,7 @@ class RoanScraper(BaseScraper):
                     "sort": "relevance:asc",
                     "arrivalDate": arrival.strftime("%Y-%m-%d"),
                     "departureDate": departure.strftime("%Y-%m-%d"),
-                    "dateOffset": 3,
+                    "dateOffset": 1,
                     "regions[]": regions,
                 }
 
@@ -45,50 +46,54 @@ class RoanScraper(BaseScraper):
 
                 campings = result.get("campingResults", [])
 
-                self.logger.info(
-                    "%s: pagina %d: %d campings",
-                    arrival,
-                    page,
-                    len(campings),
-                )
-
                 if not campings:
                     break
 
                 for camping in campings:
+                    accommodations = camping.get('accommodationKindResults', [])
 
-                    accommodation = (
-                        camping.get("accommodationKindResults") or []
-                    )
-
-                    if not accommodation:
+                    if not accommodations:
                         continue
 
-                    accommodation = accommodation[0]
+                    for accommodation in accommodations:
 
-                    amount = (
-                        accommodation
-                        .get("lowestPrice", {})
-                        .get("amount")
-                    )
-
-                    price = None
-
-                    if amount is not None:
-                        price = float(amount) / 100
-
-                    deals.append(
-                        Deal(
-                            source="Roan",
-                            title=camping.get("name", ""),
-                            location=camping.get("place", ""),
-                            region=camping.get("region", ""),
-                            countrycode=camping.get("countryCode", ""),
-                            url=accommodation.get("campingUrl", ""),
-                            arrival_date=arrival,
-                            price=price,
+                        amount = (
+                            accommodation
+                            .get("lowestPrice", {})
+                            .get("amount")
                         )
-                    )
+
+                        price = None
+
+                        if amount is not None:
+                            price = float(amount) / 100
+
+                        title = accommodation.get("title", "")
+
+                        accommodation_type = ROAN_MAPPING.get(title.lower())
+
+                        deals.append(
+                            Deal(
+                                source="Roan",
+                                title=camping.get("name", ""),
+                                location=camping.get("place", ""),
+                                region=camping.get("region", ""),
+                                countrycode=camping.get("countryCode", ""),
+                                url=accommodation.get("campingUrl", ""),
+                                arrival_date=arrival,
+                                price=price,
+
+
+                                accommodation_type=accommodation_type,
+                                comfort_level=None,
+
+                                bedrooms=None,
+                                capacity=None,
+
+                                airconditioning=None,
+                                pets_allowed=None,
+                            )
+                        )
 
                 page += 1
 

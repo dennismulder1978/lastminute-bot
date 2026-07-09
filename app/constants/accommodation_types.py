@@ -13,6 +13,7 @@ MOBILE_HOME = "mobile_home"
 SAFARI_TENT = "safari_tent"
 GLAMPING_TENT = "glamping_tent"
 LODGE_TENT = "lodge_tent"
+TENT = "tent"
 
 LODGE = "lodge"
 CHALET = "chalet"
