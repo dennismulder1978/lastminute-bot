@@ -50,7 +50,7 @@ async def main():
     await holiday_job(deal_service)
 
 
-    # Iedere 30 seconden (tijdelijk voor testen)
+    # Iedere XX seconden (tijdelijk voor testen)
     scheduler.add_job(
         holiday_job,
         "interval",

@@ -3,7 +3,7 @@ from app.scrapers.base import BaseScraper
 from datetime import timedelta, datetime
 from app.constants.accommodation_mapping import EUROCAMP_MAPPING
 import re
-
+from pprint import pprint
 class EurocampScraper(BaseScraper):
     provider = "eurocamp"
 
@@ -170,6 +170,9 @@ class EurocampScraper(BaseScraper):
                 for group in accommodation_groups:
 
                     for stay in group.get("stays", []):
+
+                        if stay["arrivalDate"] != arrival.isoformat():
+                            continue
 
                         deal = self._build_deal(
                             camp=camp,
