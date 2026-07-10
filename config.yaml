@@ -786,6 +786,9 @@ notifications:
 scheduler:
   interval_seconds: 900
 
+scrapers:
+  delay_between_providers: 60
+
 filters:
   min_price:
   max_price: 1000

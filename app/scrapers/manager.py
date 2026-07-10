@@ -1,13 +1,19 @@
+import asyncio
+
 from app.core.logging import logger
-from app.scrapers import SCRAPERS
 from app.filters.deal_filter import DealFilter
+from app.scrapers import SCRAPERS
 
 
-def run_scrapers(config):
+async def run_scrapers(config, process_callback):
 
     providers = config.get("providers", {})
     deal_filter = DealFilter(config)
-    filtered_deals = []
+
+    delay = config.get("scrapers", {}).get(
+        "delay_between_providers",
+        60,
+    )
 
     for provider_name, scraper_class in SCRAPERS.items():
 
@@ -24,21 +30,29 @@ def run_scrapers(config):
 
             scraper_deals = scraper.scrape()
 
-            accepted = 0
+            filtered_deals = []
 
             for deal in scraper_deals:
                 if deal_filter.matches(deal):
                     filtered_deals.append(deal)
-                    accepted += 1
 
             logger.info(
                 "%s: %d/%d deals accepted",
                 scraper.__class__.__name__,
-                accepted,
+                len(filtered_deals),
                 len(scraper_deals),
             )
 
+            # Verwerk direct de deals van deze provider
+            if filtered_deals:
+                await process_callback(filtered_deals)
+
+                logger.info(
+                    "Wachten %d seconden voor volgende provider...",
+                    delay,
+                )
+
+                await asyncio.sleep(delay)
+
         except Exception:
             logger.exception("%s failed", scraper.__class__.__name__)
-
-    return filtered_deals

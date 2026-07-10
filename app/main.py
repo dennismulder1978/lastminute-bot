@@ -20,9 +20,10 @@ config = load_config()
 async def holiday_job(deal_service: DealService):
     logger.info("Zoeken naar vakanties...")
 
-    deals = run_scrapers(config)
-
-    await deal_service.process(deals)
+    await run_scrapers(
+        config,
+        deal_service.process,
+    )
 
 
 async def main():
