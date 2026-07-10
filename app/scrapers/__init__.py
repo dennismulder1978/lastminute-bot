@@ -3,7 +3,7 @@ from app.scrapers.landal import LandalScraper
 from app.scrapers.roompot import RoompotScraper
 from app.scrapers.roan import RoanScraper
 from app.scrapers.eurocamps import EurocampScraper
-# from app.scrapers. import Scraper
+from app.scrapers.allcamps import AllcampsScraper
 # from app.scrapers. import Scraper
 # from app.scrapers. import Scraper
 
@@ -14,4 +14,6 @@ SCRAPERS = {
     "roompot": RoompotScraper,
     "roan": RoanScraper,
     "eurocamp": EurocampScraper,
+    "allcamps": AllcampsScraper,
+
 }

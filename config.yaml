@@ -1,4 +1,63 @@
+# algemeen
+family:
+  adults: 2
+  children:
+    - 14
+    - 11
+
+trip:
+  departure_dates:
+    - 2026-07-17
+    - 2026-07-18
+  nights: 7
+
+airports:
+  - AMS
+  - EIN
+  - CDG
+  - ORY
+
+notifications:
+  minimum_deal_score: 80
+
+scheduler:
+  interval_seconds: 900
+
+scrapers:
+  delay_between_providers: 60
+
+filters:
+  min_price:
+  max_price: 10000
+
+  countries:
+    - NL
+    - DE
+    - BE
+    - LU
+    - FR
+
+  airconditioning:
+
+  pets_allowed:
+
+  comfort_levels:
+    - premium
+    - luxury
 providers:
+  allcamps:
+    enabled: true
+
+    accommodation_types:
+      - mobile_home
+
+    countries:
+        - FR
+        - NL
+        - BE
+    bedrooms: 3
+    min_capacity: 6
+
   centerparcs:
     enabled: false
 
@@ -761,49 +820,4 @@ providers:
       - other
 
 
-# algemeen
-family:
-  adults: 2
-  children:
-    - 14
-    - 11
 
-trip:
-  departure_dates:
-    - 2026-07-17
-    - 2026-07-18
-  nights: 7
-
-airports:
-  - AMS
-  - EIN
-  - CDG
-  - ORY
-
-notifications:
-  minimum_deal_score: 80
-
-scheduler:
-  interval_seconds: 900
-
-scrapers:
-  delay_between_providers: 60
-
-filters:
-  min_price:
-  max_price: 1000
-
-  countries:
-    - NL
-    - DE
-    - BE
-    - LU
-    - FR
-
-  airconditioning:
-
-  pets_allowed:
-
-  comfort_levels:
-    - premium
-    - luxury

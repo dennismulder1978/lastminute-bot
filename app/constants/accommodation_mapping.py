@@ -88,3 +88,13 @@ LANDAL_MAPPING = {
     "4cp9": hh.BUNGALOW,
 
 }
+
+ALLCAMPS_MAPPING = {
+    'safari-tents': hh.TENT,
+    'lodge-tent': hh.LODGE_TENT,
+    'mobile-home': hh.MOBILE_HOME,
+    'bungalow-tent': hh.TENT,
+    'pitch': hh.PITCH,
+    'apartment': hh.APARTMENT,
+
+}
