@@ -49,11 +49,12 @@ async def main():
     # Meteen één keer uitvoeren
     await holiday_job(deal_service)
 
+
     # Iedere 30 seconden (tijdelijk voor testen)
     scheduler.add_job(
         holiday_job,
         "interval",
-        seconds=30,
+        seconds=config.get('scheduler').get('interval_seconds'),
         args=[deal_service],
         id="holiday_search",
         replace_existing=True,
