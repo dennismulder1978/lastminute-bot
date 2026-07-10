@@ -784,11 +784,11 @@ notifications:
   minimum_deal_score: 80
 
 scheduler:
-  interval_seconds: 30
+  interval_seconds: 900
 
 filters:
   min_price:
-  max_price: 2500
+  max_price: 1250
 
   countries:
     - NL
