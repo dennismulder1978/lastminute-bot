@@ -59,6 +59,20 @@ providers:
     bedrooms: 3
     min_capacity: 6
 
+  vacanceselect:
+    enabled: true
+
+    accommodation_types:
+      - mobile_home
+
+    countries:
+      - FR
+      - NL
+      - BE
+    bedrooms: 3
+    min_capacity: 6
+
+
   centerparcs:
     enabled: false
 

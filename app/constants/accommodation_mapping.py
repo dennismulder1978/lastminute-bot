@@ -89,7 +89,7 @@ LANDAL_MAPPING = {
 
 }
 
-ALLCAMPS_MAPPING = {
+TWENTY_MAPPING = {
     'safari-tents': hh.TENT,
     'lodge-tent': hh.LODGE_TENT,
     'mobile-home': hh.MOBILE_HOME,
@@ -98,3 +98,4 @@ ALLCAMPS_MAPPING = {
     'apartment': hh.APARTMENT,
 
 }
+
