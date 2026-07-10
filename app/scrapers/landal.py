@@ -214,6 +214,7 @@ class LandalScraper(BaseScraper):
         price_info = accommodation.get("PriceInfo", {})
 
         price = price_info.get("bestTotalPriceInCents")
+        price = price / 100
 
         return Deal(
             source="Landal",

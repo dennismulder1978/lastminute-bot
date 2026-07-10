@@ -212,6 +212,7 @@ class RoompotScraper(BaseScraper):
         price_info = accommodation.get("PriceInfo", {})
 
         price = price_info.get("bestTotalPriceInCents")
+        price = price / 100
 
         if price is None:
             self.logger.warning(
@@ -220,8 +221,6 @@ class RoompotScraper(BaseScraper):
                 info.get("Name"),
             )
             return None
-
-        price /= 100
 
         return Deal(
             source="Roompot",
