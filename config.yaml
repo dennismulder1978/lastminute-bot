@@ -788,7 +788,7 @@ scheduler:
 
 filters:
   min_price:
-  max_price: 1250
+  max_price: 1000
 
   countries:
     - NL
