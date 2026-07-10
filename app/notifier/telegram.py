@@ -13,7 +13,7 @@ class TelegramNotifier:
         self.bot = Bot(token=settings.telegram_bot_token)
 
     async def send_message(self, text: str):
-        max_attempts = 3
+        max_attempts = 5
 
         for attempt in range(1, max_attempts + 1):
             try:
