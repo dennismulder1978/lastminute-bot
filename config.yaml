@@ -28,7 +28,7 @@ scrapers:
 
 filters:
   min_price:
-  max_price: 10000
+  max_price: 1000
 
   countries:
     - NL
@@ -44,6 +44,7 @@ filters:
   comfort_levels:
     - premium
     - luxury
+
 providers:
   allcamps:
     enabled: true
