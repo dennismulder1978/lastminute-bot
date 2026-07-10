@@ -11,7 +11,7 @@ from app.scrapers.eurocamps import EurocampScraper
 SCRAPERS = {
     # "centerparcs": CenterParcsScraper,
     "landal": LandalScraper,
-    # "roompot": RoompotScraper,
-    # "roan": RoanScraper,
-    # "eurocamp": EurocampScraper,
+    "roompot": RoompotScraper,
+    "roan": RoanScraper,
+    "eurocamp": EurocampScraper,
 }

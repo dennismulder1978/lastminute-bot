@@ -163,7 +163,9 @@ class LandalScraper(BaseScraper):
         for accommodation in accommodations:
 
             info = accommodation.get("AccommodationInfo", {})
-            price = accommodation.get("PriceInfo", {})
+            price_info = accommodation.get("PriceInfo", {})
+
+            price = price_info.get("bestTotalPriceInCents")
 
             # accommodatie type
             name = info.get("Name", "").lower()
@@ -209,7 +211,9 @@ class LandalScraper(BaseScraper):
     def _build_deal(self, park_info, accommodation, arrival):
 
         info = accommodation.get("AccommodationInfo", {})
-        price = accommodation.get("PriceInfo", {})
+        price_info = accommodation.get("PriceInfo", {})
+
+        price = price_info.get("bestTotalPriceInCents")
 
         return Deal(
             source="Landal",
@@ -220,7 +224,7 @@ class LandalScraper(BaseScraper):
             url=info.get("DetailPageLink", {}).get("Url", ""),
             arrival_date=arrival,
 
-            price=price.get("bestRentalPriceInEuros"),
+            price=price,
 
             accommodation_type=self._extract_accommodation_type(
                 info.get("Name", "")
