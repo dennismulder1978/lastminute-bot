@@ -17,15 +17,11 @@ class DatabaseManager:
             SELECT id, price
             FROM deals
             WHERE source = ?
-              AND title = ?
-              AND location = ?
-              AND url = ?
-              AND arrival_date = ?
+            AND url = ?
+            AND arrival_date = ?
             """,
             (
                 deal.source,
-                deal.title,
-                deal.location,
                 deal.url,
                 deal.arrival_date.isoformat(),
             ),
@@ -34,25 +30,54 @@ class DatabaseManager:
         return cursor.fetchone()
 
     def insert_deal(self, deal):
-        self.conn.execute(
-            """
-            INSERT INTO deals
-                (source, title, location, region, countrycode, url, price, arrival_date)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                deal.source,
-                deal.title,
-                deal.location,
-                deal.region,
-                deal.countrycode,
-                deal.url,
-                deal.price,
-                deal.arrival_date.isoformat(),
-            ),
-        )
+        try:
+            self.conn.execute(
+                """
+                INSERT INTO deals
+                    (source, title, location, region, countrycode, url, price, arrival_date)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    deal.source,
+                    deal.title,
+                    deal.location,
+                    deal.region,
+                    deal.countrycode,
+                    deal.url,
+                    deal.price,
+                    deal.arrival_date.isoformat(),
+                ),
+            )
 
-        self.conn.commit()
+            self.conn.commit()
+        
+        except sqlite3.IntegrityError:
+
+            print("\n=== DUPLICATE ===")
+            print("Source :", deal.source)
+            print("Title  :", deal.title)
+            print("Arrival:", deal.arrival_date)
+            print("URL    :", deal.url)
+
+            cursor = self.conn.execute(
+                """
+                SELECT *
+                FROM deals
+                WHERE source = ?
+                AND url = ?
+                AND arrival_date = ?
+                """,
+                (
+                    deal.source,
+                    deal.url,
+                    deal.arrival_date.isoformat(),
+                ),
+            )
+
+            print("Existing row:")
+            print(cursor.fetchone())
+
+            raise
 
 
     def update_price(self, deal):
