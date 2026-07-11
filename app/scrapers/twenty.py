@@ -1,13 +1,12 @@
-from datetime import timedelta
-
+from app.constants.accommodation_mapping import TWENTY_MAPPING
 from app.scrapers.base import BaseScraper
 from app.models.deal import Deal
 
 class TwentyScraper(BaseScraper):
 
     BASE_URL = None
-    URL_SITES = None
-    URL_ACCOMMODATIONS = None
+    TENANT = None
+    LOCALE = None
     ACCOMMODATION_MAPPING = {}
 
     def scrape(self):
@@ -95,7 +94,7 @@ class TwentyScraper(BaseScraper):
         }
 
         response = self.post(
-            self.URL_SITES,
+            self.url_sites,
             headers=headers,
             json=payload,
         )
@@ -173,7 +172,7 @@ class TwentyScraper(BaseScraper):
         }
 
         response = self.post(
-            self.URL_ACCOMMODATIONS,
+            self.url_accommodations,
             headers=headers,
             json=payload,
         )
@@ -278,3 +277,22 @@ class TwentyScraper(BaseScraper):
             f"{site['slug']}"
             f"?accommodation={accommodation['id']}"
         )
+        
+        
+    @property
+    def url_sites(self):
+        return (
+            f"{self.BASE_URL}/api/twenty/v2/"
+            f"{self.TENANT}/{self.LOCALE}/search/sites"
+        )
+
+
+    @property
+    def url_accommodations(self):
+        return (
+            f"{self.BASE_URL}/api/twenty/v2/"
+            f"{self.TENANT}/{self.LOCALE}/search/accommodations"
+        )
+        
+        
+    

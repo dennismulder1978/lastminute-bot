@@ -59,6 +59,19 @@ providers:
     bedrooms: 3
     min_capacity: 6
 
+  luxcamp:
+    enabled: true
+
+    accommodation_types:
+      - mobile_home
+
+    countries:
+        - FR
+        - NL
+        - BE
+    bedrooms: 3
+    min_capacity: 6
+
   vacanceselect:
     enabled: true
 
@@ -69,6 +82,32 @@ providers:
       - FR
       - NL
       - BE
+    bedrooms: 3
+    min_capacity: 6
+
+  danskbilferie:
+    enabled: false
+
+    accommodation_types:
+      - mobile_home
+
+    countries:
+        - FR
+        - NL
+        - BE
+    bedrooms: 3
+    min_capacity: 6
+
+  friferie:
+    enabled: false
+
+    accommodation_types:
+      - mobile_home
+
+    countries:
+        - FR
+        - NL
+        - BE
     bedrooms: 3
     min_capacity: 6
 
