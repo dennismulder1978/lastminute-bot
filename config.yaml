@@ -28,7 +28,7 @@ scrapers:
 
 filters:
   min_price:
-  max_price: 1000
+  max_price: 1250
 
   countries:
     - NL

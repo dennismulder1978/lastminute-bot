@@ -10,11 +10,11 @@ from app.scrapers.vacanceselect import VacanceSelectScraper
 
 SCRAPERS = {
     # "centerparcs": CenterParcsScraper,
-    # "landal": LandalScraper,
-    # "roompot": RoompotScraper,
-    # "roan": RoanScraper,
-    # "eurocamp": EurocampScraper,
-    # "allcamps": AllcampsScraper,
+    "landal": LandalScraper,
+    "roompot": RoompotScraper,
+    "roan": RoanScraper,
+    "eurocamp": EurocampScraper,
+    "allcamps": AllcampsScraper,
     "vacanceselect": VacanceSelectScraper,
 
 }
