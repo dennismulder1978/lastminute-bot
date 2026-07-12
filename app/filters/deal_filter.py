@@ -20,7 +20,9 @@ class DealFilter:
 
         #country
         countries = self.filters.get("countries")
-        if countries and deal.countrycode not in countries:
+        print(f"{deal.countrycode}")
+        print(f"{countries}")
+        if countries and str(deal.countrycode) not in countries:
             return False
 
         #bedrooms

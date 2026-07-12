@@ -96,6 +96,18 @@ TWENTY_MAPPING = {
     'bungalow-tent': hh.TENT,
     'pitch': hh.PITCH,
     'apartment': hh.APARTMENT,
-
 }
 
+YELLOH_MAPPING = {
+    "cottage": hh.MOBILE_HOME,
+    "chalet": hh.CHALET,
+    "lodge": hh.LODGE,
+    "cabin": hh.CABIN,
+    "villa": hh.VILLA,
+    "bungalow": hh.BUNGALOW,
+    "tent": hh.TENT,
+    "safari": hh.SAFARI_TENT,
+    "glamping": hh.GLAMPING_TENT,
+    "canvas": hh.TENT,
+    "premium": hh.MOBILE_HOME,
+}

@@ -36,6 +36,10 @@ filters:
     - BE
     - LU
     - FR
+    - "434"
+    - "435"
+    - "6330"
+
 
   airconditioning:
 
@@ -46,6 +50,22 @@ filters:
     - luxury
 
 providers:
+  yelloh:
+    enabled: true
+
+    accommodation_types:
+      - mobile_home
+      - bungalow
+
+    countries:
+        - FR
+        - NL
+        - BE
+        - 434
+
+    bedrooms: 3
+    min_capacity: 6
+
   allcamps:
     enabled: true
 
@@ -64,6 +84,7 @@ providers:
 
     accommodation_types:
       - mobile_home
+      - bungalow
 
     countries:
         - FR
@@ -77,6 +98,7 @@ providers:
 
     accommodation_types:
       - mobile_home
+      - bungalow
 
     countries:
       - FR
