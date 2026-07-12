@@ -53,6 +53,7 @@ class DealService:
 
                 self.db.update_price(deal)
 
+            if abs(old_price - deal.price) >= 5:
                 await self.notifier.send_message(
                     f"""💰 Prijs gewijzigd
 

@@ -81,25 +81,27 @@ class DatabaseManager:
 
 
     def update_price(self, deal):
-        self.conn.execute(
+        cursor = self.conn.execute(
             """
             UPDATE deals
-            SET price     = ?,
+            SET price = ?,
                 last_seen = CURRENT_TIMESTAMP
             WHERE source = ?
-              AND title = ?
-              AND location = ?
-              AND url = ?
-              AND arrival_date = ?
+            AND url = ?
+            AND arrival_date = ?
             """,
             (
                 deal.price,
                 deal.source,
-                deal.title,
-                deal.location,
                 deal.url,
                 deal.arrival_date.isoformat(),
             ),
         )
 
         self.conn.commit()
+
+        if cursor.rowcount != 1:
+            raise RuntimeError(
+                f"update_price() werkte {cursor.rowcount} rijen bij "
+                f"voor {deal.source} | {deal.arrival_date} | {deal.url}"
+            )
