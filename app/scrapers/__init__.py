@@ -7,7 +7,7 @@ from app.scrapers.twenty_scrapers import AllcampsScraper, VacanceSelectScraper, 
 from app.scrapers.yelloh import YellohScraper
 
 SCRAPERS = {
-    # "centerparcs": CenterParcsScraper,
+    "centerparcs": CenterParcsScraper,
     "landal": LandalScraper,
     "roompot": RoompotScraper,
     "roan": RoanScraper,

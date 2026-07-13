@@ -9,6 +9,8 @@ trip:
   departure_dates:
     - 2026-07-17
     - 2026-07-18
+    - 2026-07-19
+    
   nights: 7
 
 airports:
