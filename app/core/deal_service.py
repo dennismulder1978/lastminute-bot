@@ -1,6 +1,5 @@
 from app.core.logging import logger
 from app.database.manager import DatabaseManager
-from app.models.deal import Deal
 
 
 class DealService:

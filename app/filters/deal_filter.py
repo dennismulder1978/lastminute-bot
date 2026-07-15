@@ -20,8 +20,6 @@ class DealFilter:
 
         #country
         countries = self.filters.get("countries")
-        print(f"{deal.countrycode}")
-        print(f"{countries}")
         if countries and str(deal.countrycode) not in countries:
             return False
 
@@ -29,9 +27,9 @@ class DealFilter:
         bedrooms = self.filters.get("bedrooms")
 
         if bedrooms is not None and deal.bedrooms is not None:
-            if deal.bedrooms != bedrooms:
+            if deal.bedrooms >= bedrooms:
                 self.logger.info(
-                    "Filtered: %s (bedrooms %s != %s)",
+                    "Filtered: %s (bedrooms %s < %s)",
                     deal.title,
                     deal.bedrooms,
                     bedrooms,
