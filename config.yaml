@@ -33,14 +33,14 @@ filters:
   max_price: 1250
 
   countries:
-    - NL
-    - DE
+#    - NL
+#    - DE
     - BE
     - LU
     - FR
     - "434"
-    - "435"
-    - "6330"
+#    - "435"
+#    - "6330"
 
 
   airconditioning:

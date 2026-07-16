@@ -25,9 +25,8 @@ class DealFilter:
 
         #bedrooms
         bedrooms = self.filters.get("bedrooms")
-
         if bedrooms is not None and deal.bedrooms is not None:
-            if deal.bedrooms >= bedrooms:
+            if deal.bedrooms < bedrooms:
                 self.logger.info(
                     "Filtered: %s (bedrooms %s < %s)",
                     deal.title,
