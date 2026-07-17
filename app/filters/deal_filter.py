@@ -8,7 +8,6 @@ class DealFilter:
         self.logger = logging.getLogger("deal_filter")
 
     def matches(self, deal):
-
         # max price
         max_price = self.filters.get("max_price")
         if (
@@ -37,7 +36,6 @@ class DealFilter:
 
         # min cap
         min_capacity = self.filters.get("min_capacity")
-
         if min_capacity is not None and deal.capacity is not None:
             if deal.capacity < min_capacity:
                 self.logger.info(
@@ -48,5 +46,17 @@ class DealFilter:
                 )
                 return False
 
+
+        # airconditioning
+        airconditioning = self.filters.get("airconditioning")
+        if airconditioning is not None and deal.airconditioning is not None:
+            if deal.airconditioning != airconditioning:
+                self.logger.info(
+                    "Filtered: %s (airconditioning %s != %s)",
+                    deal.title,
+                    deal.airconditioning,
+                    airconditioning,
+                )
+                return False
 
         return True

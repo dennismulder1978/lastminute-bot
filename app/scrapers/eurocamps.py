@@ -161,16 +161,10 @@ class EurocampScraper(BaseScraper):
                     site_code=camp["parc"]["code"],
                 )
 
-                # self.logger.info(
-                #     "%s -> %d accommodation groups",
-                #     camp["parc"]["name"],
-                #     len(accommodation_groups),
-                # )
-
                 for group in accommodation_groups:
 
                     for stay in group.get("stays", []):
-
+                        pprint(stay)
                         if stay["arrivalDate"] != arrival.isoformat():
                             continue
 
@@ -338,6 +332,15 @@ class EurocampScraper(BaseScraper):
             accommodation.get("capacity")
         )
 
+        airco = None
+        try:
+            if 'Airconditioning' in stay["accommodation"]["features"]:
+                airco = "yes"
+            else:
+                airco = "no"
+        except Exception as e:
+            pass
+
         return Deal(
 
             source=self.provider,
@@ -367,7 +370,7 @@ class EurocampScraper(BaseScraper):
             bedrooms=bedrooms,
             capacity=capacity,
 
-            airconditioning=None,
+            airconditioning=airco,
             pets_allowed=None,
         )
 

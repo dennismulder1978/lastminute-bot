@@ -43,7 +43,7 @@ filters:
 #    - "6330"
 
 
-  airconditioning:
+  airconditioning: yes
 
   pets_allowed:
 
